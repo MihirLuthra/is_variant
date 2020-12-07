@@ -5,7 +5,7 @@ Generates methods to match enum variant.
 # Example
 
 ```rust
-use is_variant_derive::IsVariant;
+use is_variant::IsVariant;
  
 #[derive(IsVariant)]
 enum TestEnum {

@@ -4,7 +4,7 @@
 //!
 //! ```rust
 //! # macro_rules! dont_test { () => {
-//! use is_variant_derive::IsVariant;
+//! use is_variant::IsVariant;
 //! 
 //! #[derive(IsVariant)]
 //! enum TestEnum {
