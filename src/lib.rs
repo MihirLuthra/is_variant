@@ -1,8 +1,9 @@
-//! Generates methods to check variant
+//! Generates methods to match enum variant.
 //!
 //! # Example
 //!
-//! ```ignore
+//! ```rust
+//! # macro_rules! dont_test { () => {
 //! use is_variant_derive::IsVariant;
 //! 
 //! #[derive(IsVariant)]
@@ -26,6 +27,7 @@
 //!     let x = TestEnum::D {_name: "Jane Doe".into(), _age: 30 };
 //!     assert!(x.is_d());
 //! }
+//! #}}
 //! ```
 
 extern crate proc_macro;
