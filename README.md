@@ -1,6 +1,6 @@
 # is_variant
 
-Generates methods to check variant
+Generates methods to match enum variant.
 
 # Example
 
