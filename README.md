@@ -13,6 +13,7 @@ enum TestEnum {
     B(),
     C(i32, i32),
     D { _name: String, _age: i32 },
+    VariantTest,
 }
  
 fn main() {
@@ -27,5 +28,8 @@ fn main() {
  
     let x = TestEnum::D {_name: "Jane Doe".into(), _age: 30 };
     assert!(x.is_d());
+
+    let x = TestEnum::VariantTest;
+    assert!(x.is_variant_test());
 }
 ```

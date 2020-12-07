@@ -12,6 +12,7 @@
 //!     B(),
 //!     C(i32, i32),
 //!     D { _name: String, _age: i32 },
+//!     VariantTest,
 //! }
 //! 
 //! fn main() {
@@ -26,8 +27,11 @@
 //! 
 //!     let x = TestEnum::D {_name: "Jane Doe".into(), _age: 30 };
 //!     assert!(x.is_d());
+//!
+//!     let x = TestEnum::VariantTest;
+//!     assert!(x.is_variant_test());
 //! }
-//! #}}
+//! # }}
 //! ```
 
 extern crate proc_macro;
@@ -38,6 +42,8 @@ use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{format_ident, quote, quote_spanned};
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Error, Fields};
+
+use convert_case::{Case, Casing};
 
 macro_rules! derive_error {
     ($string: tt) => {
@@ -70,7 +76,7 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
                 };
 
                 let mut is_variant_func_name =
-                    format_ident!("is_{}", variant_name.to_string().to_lowercase());
+                    format_ident!("is_{}", variant_name.to_string().to_case(Case::Snake));
                 is_variant_func_name.set_span(variant_name.span());
 
                 variant_checker_functions.extend(quote_spanned! {variant.span()=>
