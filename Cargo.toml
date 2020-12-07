@@ -3,6 +3,9 @@ name = "is_variant"
 version = "0.1.0"
 authors = ["Mihir Luthra <luthramihir708@gmail.com>"]
 edition = "2018"
+description = "Generates methods to match enum variant."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/MihirLuthra/is_variant"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
