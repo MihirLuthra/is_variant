@@ -5,7 +5,7 @@
 //! ```rust
 //! # macro_rules! dont_test { () => {
 //! use is_variant::IsVariant;
-//! 
+//!
 //! #[derive(IsVariant)]
 //! enum TestEnum {
 //!     A,
@@ -14,17 +14,17 @@
 //!     D { _name: String, _age: i32 },
 //!     VariantTest,
 //! }
-//! 
+//!
 //! fn main() {
 //!     let x = TestEnum::C(1, 2);
 //!     assert!(x.is_c());
-//! 
+//!
 //!     let x = TestEnum::A;
 //!     assert!(x.is_a());
-//! 
+//!
 //!     let x = TestEnum::B();
 //!     assert!(x.is_b());
-//! 
+//!
 //!     let x = TestEnum::D {_name: "Jane Doe".into(), _age: 30 };
 //!     assert!(x.is_d());
 //!
@@ -65,6 +65,7 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
     match data {
         Data::Enum(data_enum) => {
             variant_checker_functions = TokenStream2::new();
+            let has_multiple_variants = data_enum.variants.len() > 1;
 
             for variant in &data_enum.variants {
                 let ref variant_name = variant.ident;
@@ -79,14 +80,22 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
                     format_ident!("is_{}", variant_name.to_string().to_case(Case::Snake));
                 is_variant_func_name.set_span(variant_name.span());
 
-                variant_checker_functions.extend(quote_spanned! {variant.span()=>
-                    fn #is_variant_func_name(&self) -> bool {
-                        match self {
-                            #name::#variant_name #fields_in_variant => true,
-                            _ => false,
+                if has_multiple_variants {
+                    variant_checker_functions.extend(quote_spanned! {variant.span()=>
+                        fn #is_variant_func_name(&self) -> bool {
+                            match self {
+                                #name::#variant_name #fields_in_variant => true,
+                                _ => false,
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    variant_checker_functions.extend(quote_spanned! {variant.span()=>
+                        fn #is_variant_func_name(&self) -> bool {
+                            true
+                        }
+                    });
+                }
             }
         }
         _ => return derive_error!("IsVariant is only implemented for enums"),
