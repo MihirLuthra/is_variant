@@ -59,6 +59,7 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
 
     let ref name = input.ident;
     let ref data = input.data;
+    let ref vis = input.vis;
 
     let mut variant_checker_functions;
 
@@ -81,7 +82,7 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
 
                 variant_checker_functions.extend(quote_spanned! {variant.span()=>
                     #[doc=concat!("Returns true if this value is the `", stringify!(#variant_name), "` variant of [`", stringify!(#name), "`]")]
-                    fn #is_variant_func_name(&self) -> bool {
+                    #vis fn #is_variant_func_name(&self) -> bool {
                         match self {
                             #name::#variant_name #fields_in_variant => true,
                             _ => false,
