@@ -80,6 +80,7 @@ pub fn derive_is_variant(input: TokenStream) -> TokenStream {
                 is_variant_func_name.set_span(variant_name.span());
 
                 variant_checker_functions.extend(quote_spanned! {variant.span()=>
+                    #[doc=concat!("Returns true if this value is the `", stringify!(#variant_name), "` variant of [`", stringify!(#name), "`]")]
                     fn #is_variant_func_name(&self) -> bool {
                         match self {
                             #name::#variant_name #fields_in_variant => true,
