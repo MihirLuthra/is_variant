@@ -1,3 +1,5 @@
+See this instead: https://crates.io/crates/derive_is_enum_variant
+
 # is_variant
 
 Generates methods to match enum variant.
